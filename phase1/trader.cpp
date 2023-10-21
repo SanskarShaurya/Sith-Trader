@@ -41,7 +41,6 @@ int main() {
         input.push_back(message.substr(start, end - start));
         start = end + 2;
     }
-
     delimiter = ' ';
     std::vector<Stock*> stocks;
     for (auto i : input){
