@@ -34,7 +34,11 @@
 int main() {
 
     Receiver rcv;
-    std::string message = rcv.readIML();
+    std::string message = "";
+    while(true){
+        message += rcv.readIML();
+        if(message[message.size() - 1] == '$') break;
+    }
     char delimiter = '#';
     std::vector<std::string> input;
     size_t start = 0, end = 0;
