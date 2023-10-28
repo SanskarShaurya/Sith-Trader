@@ -5,16 +5,16 @@
 all: trader iml
 
 trader: trader.cpp receiver.h
-	g++-10 -std=c++20 trader.cpp -o trader
+	g++ -std=c++20 trader.cpp -o trader
 
 iml: iml.cpp
-	g++-10 -std=c++20 iml.cpp -o iml
+	g++ -std=c++20 iml.cpp -o iml
 
 runpart1: iml trader
 	./trader 1 > output.txt &
 	sleep 1
 	./iml inputs/data1.txt
-	diff -Bw outputs/out1.txt output.txt
+	diff outputs/out1.txt output.txt | cat -t
 
 runpart2: iml trader
 	./trader 2 > output.txt &

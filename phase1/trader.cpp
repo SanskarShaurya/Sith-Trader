@@ -62,19 +62,19 @@ int main() {
         if (stocks.find(curr) == 0){
             stocks[curr] = stoi(order[1]);
             std::cout << order[0] << " " << order[1] << " ";
-            if (order[2]=="s") std::cout << "b\n";
-            else std::cout << "s\n";
+            if (order[2]=="s") std::cout << "b\r\n";
+            else std::cout << "s\r\n";
         }else{
             if(order[2]=="s"){
                 if(stoi(order[1]) < stocks[curr]){
-                    std::cout << order[0] << " " << order[1] << " " << "b\n";
+                    std::cout << order[0] << " " << order[1] << " " << "b\r\n";
                     stocks[curr] = stoi(order[1]);
-                } else std::cout << "No trade\n";
+                } else std::cout << "No trade\r\n";
             } else {
                 if(stoi(order[1]) > stocks[curr]){
-                    std::cout << order[0] << " " << order[1] << " " << "s\n";
+                    std::cout << order[0] << " " << order[1] << " " << "s\r\n";
                     stocks[curr] = stoi(order[1]);
-                } else std::cout << "No trade\n";
+                } else std::cout << "No trade\r\n";
             }
         }
     }
