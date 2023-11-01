@@ -1,20 +1,15 @@
 #include "map.h"
-
+#include "set.h"
 int main(){
-    string a = "abcd";
-    string b = "efgh";
-    mystring a1 = mystring(a);
-    mystring b1 = mystring(b);
-    b = "hijk";
-    mystring c1 = mystring(b);
-    Map m;
-    m[a1] = 10;
-    m[b1] = 20;
-    m[c1] = 30;
-    cout<<m[b1];
-    cout<<m[c1];
-    cout<<m.find(a1)->second;
-    b = "uikjh";
-    mystring d1 = mystring(b);
-    cout<<"\n"<<m.find(d1);
+    Map<int> stocks;
+    Map<RedBlackTree> stock_prices;
+    mystring a("abcd");
+    mystring b("cdef");
+    stock_prices[a].insert(10);
+    stock_prices[a].insert(20);
+    stock_prices[a].insert(30);
+    stock_prices[a].insert(40);
+    stock_prices[a].printTree();
+    stock_prices[a].deleteNode(30);
+    stock_prices[a].printTree();
 }

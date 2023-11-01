@@ -2,7 +2,7 @@
 #include "map.h"
 #include <vector>
 #include <string>
-
+#include "set.h"
 // class Stock
 // {
 // public:
@@ -48,7 +48,9 @@ int main() {
     }
     delimiter = ' ';
     // std::vector<Stock*> stocks;
-    Map stocks;
+    Map<int> stocks;
+
+
     for (auto i : input){
         std::vector<std::string> order;
         order.resize(3);

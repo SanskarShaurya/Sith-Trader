@@ -24,6 +24,7 @@ public:
     }
 };
 
+template <class T>
 class Map {
 private:
 	Map* iterator(mystring first)
@@ -70,7 +71,7 @@ private:
 	{
 		Map* newnode = (Map*)malloc(sizeof(Map));
 		newnode->first = first;
-		newnode->second = 0;
+		newnode->second = T();
 		newnode->left = nullptr;
 		newnode->right = nullptr;
 		newnode->par = nullptr;
@@ -281,14 +282,15 @@ public:
 
 	// "first" is key and "second" is value
 	Map *left, *right, *par;
-	int second, depth;
+	int depth;
+	T second;
     mystring first;
 
     Map(){
         root = nullptr;
     }
 
-	int& operator[](mystring key) {
+	T& operator[](mystring key) {
 		return insert(key)->second;
 	}
 
@@ -445,7 +447,7 @@ public:
 	
 	// Given the key of an element it updates
 	// the value of the key
-	void update(mystring first, int second)
+	void update(mystring first, T second)
 	{
 		Map* temp = iterator(first);
 		if (temp != nullptr) {
@@ -465,7 +467,7 @@ public:
 		return iterator(first);
 	}
 
-	void insert(mystring first, int second)
+	void insert(mystring first, T second)
 	{
 		Map* temp = iterator(first);
 		if (temp == nullptr) {
@@ -477,7 +479,10 @@ public:
 	}
 };
 
-Map* Map::root = nullptr;
-int Map::cnt = 0;
+template<class T>
+Map<T>* Map<T>::root = nullptr;
+
+template<class T>
+int Map<T>::cnt = 0;
 
 
