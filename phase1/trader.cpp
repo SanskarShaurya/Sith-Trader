@@ -73,15 +73,17 @@ int main() {
             if(order[2]=="s"){
                 if(stocks[curr].hasBestSelling){
                     if(stoi(order[1]) == stocks[curr].bestSelling) {
-                        std::cout << "No Trade" << "\r\n";
+                        std::cout << "No trade" << "\r\n";
                         stocks[curr].hasBestSelling = 0;
                     }
+                    else{goto banyan;}
                 }else{
+                    banyan:
                     if(stocks[curr].standard > stoi(order[1])){
                         std::cout << order[0] << " " << order[1] << " " << "b\r\n";
                         stocks[curr].standard = stoi(order[1]);
                     }else{
-                        std::cout << "No Trade" << "\r\n";
+                        std::cout << "No trade" << "\r\n";
                         if(stocks[curr].hasBestBuying){
                             if(stocks[curr].bestBuying < stoi(order[1])){
                                 stocks[curr].bestBuying = stoi(order[1]);
@@ -95,15 +97,17 @@ int main() {
             }else{
                 if(stocks[curr].hasBestBuying){
                     if(stoi(order[1]) == stocks[curr].bestBuying) {
-                        std::cout << "No Trade" << "\r\n";
+                        std::cout << "No trade" << "\r\n";
                         stocks[curr].hasBestBuying = 0;
                     }
+                    else{goto chaddi;}
                 }else{
+                    chaddi:
                     if(stocks[curr].standard < stoi(order[1])){
                         std::cout << order[0] << " " << order[1] << " " << "s\r\n";
                         stocks[curr].standard = stoi(order[1]);
                     }else{
-                        std::cout << "No Trade" << "\r\n";
+                        std::cout << "No trade" << "\r\n";
                         if(stocks[curr].hasBestSelling){
                             if(stocks[curr].bestSelling < stoi(order[1])){
                                 stocks[curr].bestSelling = stoi(order[1]);
