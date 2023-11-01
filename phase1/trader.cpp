@@ -49,8 +49,8 @@ int main() {
     delimiter = ' ';
     // std::vector<Stock*> stocks;
     Map<int> stocks;
-
-
+    Map<RedBlackTree> valid_orders;
+    int check;
     for (auto i : input){
         std::vector<std::string> order;
         order.resize(3);
@@ -75,7 +75,11 @@ int main() {
                 if(stoi(order[1]) < stocks[curr]){
                     std::cout << order[0] << " " << order[1] << " " << "b\r\n";
                     stocks[curr] = stoi(order[1]);
-                } else std::cout << "No trade\r\n";
+                } else{
+                    std::cout << "No trade\r\n";
+                    check = -1* stoi(order[1]);
+                    if()
+                } 
             } else {
                 if(stoi(order[1]) > stocks[curr]){
                     std::cout << order[0] << " " << order[1] << " " << "s\r\n";
