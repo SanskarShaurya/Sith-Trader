@@ -79,6 +79,7 @@ int main() {
                 }else{
                     if(stocks[curr].standard > stoi(order[1])){
                         std::cout << order[0] << " " << order[1] << " " << "b\r\n";
+                        stocks[curr].standard = stoi(order[1]);
                     }else{
                         std::cout << "No Trade" << "\r\n";
                         if(stocks[curr].hasBestBuying){
@@ -99,7 +100,8 @@ int main() {
                     }
                 }else{
                     if(stocks[curr].standard < stoi(order[1])){
-                        std::cout << order[0] << " " << order[1] << " " << "b\r\n";
+                        std::cout << order[0] << " " << order[1] << " " << "s\r\n";
+                        stocks[curr].standard = stoi(order[1]);
                     }else{
                         std::cout << "No Trade" << "\r\n";
                         if(stocks[curr].hasBestSelling){
@@ -114,6 +116,8 @@ int main() {
                 }
             }
         }
+        // std::cout << order[0] << "\r\n";
+        // stocks[curr].printState();
     }
     return 0;
 }
