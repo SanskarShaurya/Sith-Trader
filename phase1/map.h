@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstring>
 #include <vector>
 #include <string>
 using namespace std;
@@ -14,10 +13,10 @@ public:
     // Overload the ">" operator to compare based on name
     bool operator>(const mystring &other) const
     {
-        return std::strcmp(name.c_str(), other.name.c_str()) > 0;
+        return name.compare(other.name) > 0;
     }
     bool operator<(const mystring& other) const {
-        return std::strcmp(name.c_str(), other.name.c_str()) < 0;
+        return name.compare(other.name) < 0;
     }
     bool operator!=(const mystring& other) const {
         return name != other.name;

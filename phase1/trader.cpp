@@ -2,7 +2,7 @@
 #include "map.h"
 #include <vector>
 #include <string>
-#include "set.h"
+#include "Stock.h"
 // class Stock
 // {
 // public:
@@ -48,8 +48,7 @@ int main() {
     }
     delimiter = ' ';
     // std::vector<Stock*> stocks;
-    Map<int> stocks;
-    Map<RedBlackTree> valid_orders;
+    Map<Stock> stocks;
     int check;
     for (auto i : input){
         std::vector<std::string> order;
@@ -66,25 +65,53 @@ int main() {
 
         mystring curr = mystring(order[0]);
         if (stocks.find(curr) == 0){
-            stocks[curr] = stoi(order[1]);
+            stocks[curr].standard = stoi(order[1]);
             std::cout << order[0] << " " << order[1] << " ";
             if (order[2]=="s") std::cout << "b\r\n";
             else std::cout << "s\r\n";
         }else{
             if(order[2]=="s"){
-                if(stoi(order[1]) < stocks[curr]){
-                    std::cout << order[0] << " " << order[1] << " " << "b\r\n";
-                    stocks[curr] = stoi(order[1]);
-                } else{
-                    std::cout << "No trade\r\n";
-                    check = -1* stoi(order[1]);
-                    if()
-                } 
-            } else {
-                if(stoi(order[1]) > stocks[curr]){
-                    std::cout << order[0] << " " << order[1] << " " << "s\r\n";
-                    stocks[curr] = stoi(order[1]);
-                } else std::cout << "No trade\r\n";
+                if(stocks[curr].hasBestSelling){
+                    if(stoi(order[1]) == stocks[curr].bestSelling) {
+                        std::cout << "No Trade" << "\r\n";
+                        stocks[curr].hasBestSelling = 0;
+                    }
+                }else{
+                    if(stocks[curr].standard > stoi(order[1])){
+                        std::cout << order[0] << " " << order[1] << " " << "b\r\n";
+                    }else{
+                        std::cout << "No Trade" << "\r\n";
+                        if(stocks[curr].hasBestBuying){
+                            if(stocks[curr].bestBuying < stoi(order[1])){
+                                stocks[curr].bestBuying = stoi(order[1]);
+                            }
+                        }else{
+                            stocks[curr].bestBuying = stoi(order[1]);
+                            stocks[curr].hasBestBuying = 1;
+                        }
+                    } 
+                }
+            }else{
+                if(stocks[curr].hasBestBuying){
+                    if(stoi(order[1]) == stocks[curr].bestBuying) {
+                        std::cout << "No Trade" << "\r\n";
+                        stocks[curr].hasBestBuying = 0;
+                    }
+                }else{
+                    if(stocks[curr].standard < stoi(order[1])){
+                        std::cout << order[0] << " " << order[1] << " " << "b\r\n";
+                    }else{
+                        std::cout << "No Trade" << "\r\n";
+                        if(stocks[curr].hasBestSelling){
+                            if(stocks[curr].bestSelling < stoi(order[1])){
+                                stocks[curr].bestSelling = stoi(order[1]);
+                            }
+                        }else{
+                            stocks[curr].bestSelling = stoi(order[1]);
+                            stocks[curr].hasBestSelling = 1;
+                        }
+                    } 
+                }
             }
         }
     }

@@ -1,15 +1,12 @@
 #include "map.h"
 #include "set.h"
 int main(){
-    Map<int> stocks;
+    Map<std::pair<int,int>> stocks;
     Map<RedBlackTree> stock_prices;
     mystring a("abcd");
     mystring b("cdef");
-    stock_prices[a].insert(10);
-    stock_prices[a].insert(20);
-    stock_prices[a].insert(30);
-    stock_prices[a].insert(40);
-    stock_prices[a].printTree();
-    stock_prices[a].deleteNode(30);
-    stock_prices[a].printTree();
+    stocks[a]= std::make_pair(NULL,2);
+    int x = 0;
+    if(x==NULL) std::cout << "yes";
+    else std::cout << "no";
 }
