@@ -85,7 +85,7 @@ int main() {
                     }else{
                         std::cout << "No trade" << "\r\n";
                         if(stocks[curr].hasBestBuying){
-                            if(stocks[curr].bestBuying < stoi(order[1])){
+                            if(stocks[curr].bestBuying > stoi(order[1])){
                                 stocks[curr].bestBuying = stoi(order[1]);
                             }
                         }else{
