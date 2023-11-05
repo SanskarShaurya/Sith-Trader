@@ -6,7 +6,8 @@ public:
     std::string name;
     mystring(const std::string &stockName) : name(stockName){}
     mystring(){}
-
+    // Copy constructor
+    mystring(const mystring& other) : name(other.name) {}
     // Overload the ">" operator to compare based on name
     bool operator>(const mystring &other) const
     {

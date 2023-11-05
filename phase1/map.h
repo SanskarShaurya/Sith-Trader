@@ -6,7 +6,7 @@ using namespace std;
 
 template <class T>
 class RedBlackTree {
-private:
+public:
 	// Node creating subclass
 	struct Node {
 		mystring data;
@@ -16,9 +16,10 @@ private:
 		Node* parent;
         T value;
 
-
+		Node () {};
 		Node(mystring data, T value) : data(data),value(value), left(nullptr), right(nullptr), colour('R'), parent(nullptr) {}
 	};
+
 
 	Node* root;
 	bool ll; // Left-Left Rotation flag
@@ -27,27 +28,37 @@ private:
 	bool rl; // Right-Left Rotation flag
 
 	// Function to perform Left Rotation
-	Node* rotateLeft(Node* node) {
-		Node* x = node->right;
-		Node* y = x->left;
-		x->left = node;
-		node->right = y;
-		node->parent = x;
-		if (y != nullptr)
-			y->parent = node;
-		return x;
+	Node* rotateLeft(Node* loc) {
+		// if(!loc->right) return;
+		Node* q = loc->right;
+		if(!q) return loc;
+		Node* b = q->left;
+		q->left = loc;
+		if(loc->parent) if(loc->parent->left == loc) loc->parent->left = q;
+		else loc->parent->right = q;
+		q->parent = loc->parent;
+		loc->parent = q;
+		loc->right = b;
+		if(b)b->parent = loc;
+		if (loc==root) root = q;
+		return q;
 	}
 
 	// Function to perform Right Rotation
-	Node* rotateRight(Node* node) {
-		Node* x = node->left;
-		Node* y = x->right;
-		x->right = node;
-		node->left = y;
-		node->parent = x;
-		if (y != nullptr)
-			y->parent = node;
-		return x;
+	Node* rotateRight(Node* loc) {
+		// if (!loc->left) return;
+		Node* p = loc->left;
+		if(!p) return loc;
+		Node* b = p->right;
+		p->right = loc;
+		if(loc->parent) if(loc->parent->left == loc) loc->parent->left = p;
+		else loc->parent->right = p;
+		p->parent = loc->parent;
+		loc->parent = p;
+		if(b)b->parent = loc;
+		loc->left = b;
+		if(loc==root) root = p;
+		return p;
 	}
 
 	// Helper function for insertion
@@ -131,7 +142,103 @@ private:
 		return root;
 	}
 
+	
+
 public:
+
+	Node* successor(Node* current) {
+		if (current->right != nullptr){
+			current = current->right;
+			while(current->left != nullptr){
+				current = current->left;
+			}
+			return current;
+		}
+		Node* temp = new Node;
+		temp = current->parent;
+		if(temp == nullptr) return nullptr;
+		while(temp != nullptr && current == temp->right){
+			current = temp;
+			temp = temp->parent;
+		}
+		return temp;
+	}
+
+	// Copy constructor
+	RedBlackTree(const RedBlackTree& other) {
+		root = copyHelper(other.root);
+	}
+
+	// Helper function to copy a node and its children
+	Node* copyHelper(Node* node) {
+		if (node == nullptr) {
+			return nullptr;
+		} else {
+			Node* newNode = new Node(node->data, node->value);
+			newNode->colour = node->colour;
+			newNode->left = copyHelper(node->left);
+			newNode->right = copyHelper(node->right);
+			if (newNode->left != nullptr) {
+				newNode->left->parent = newNode;
+			}
+			if (newNode->right != nullptr) {
+				newNode->right->parent = newNode;
+			}
+			return newNode;
+		}
+	}
+	class iterator
+	{
+		Node *current;
+
+	public:
+		iterator(Node *node) : current(node) {}
+
+		const std::pair<mystring,T> operator*() const { return {current->data,current->value}; }
+		iterator &operator++()
+		{
+			if (current->right != nullptr)
+			{
+				current = current->right;
+				while (current->left != nullptr)
+				{
+					current = current->left;
+				}
+			}
+			else
+			{
+				Node *temp = current->parent;
+				while (temp != nullptr && current == temp->right)
+				{
+					current = temp;
+					temp = temp->parent;
+				}
+				current = temp;
+			}
+			return *this;
+		}
+		bool operator!=(const iterator &other) { return current != other.current; }
+		bool operator!=(const iterator &other) const { return current != other.current; }
+   		bool operator==(const iterator &other) const { return current == other.current; }
+
+	};
+
+	iterator begin() const
+	{
+		Node *node = root;
+		while (node->left != nullptr)
+		{
+			node = node->left;
+		}
+		return iterator(node);
+	}
+
+	iterator end() const
+	{
+		return iterator(nullptr);
+	}
+
+
 	RedBlackTree() : root(nullptr), ll(false), rr(false), lr(false), rl(false) {}
 
 	// Function to insert data into the tree
@@ -150,6 +257,8 @@ public:
             else if(temp->data > data) temp = temp->left;
             else temp = temp->right;
         }
+		insert(data,0);
+		return search(data);
         // return -1;
     }
     bool find(mystring data){
