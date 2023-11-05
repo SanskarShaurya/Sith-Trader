@@ -25,33 +25,38 @@ int main()
     }
     delimiter = ' ';
     vector<Package> packages;
-    int min_profit = 0;
-    Package best_Package;
+    int net_profit = 0;
     for(auto ms : input){
+        Package bestPackage;
+        int maxProfit = 0;
         int n = packages.size();
         for (int i = 0; i < (1 << n); i++)
         {
-            Package P(ms, n-1);
-            int provisional_profit = 0;
+            Package P(ms);
+            P.indexes.push_back(n);
             for (int j = n - 1; j >= 0; j--)
             {
-                if ((i & (1 << j)) != 0)
+                if ((i & (1 << j)) != 0){
                     P = P + packages[j];
-                    P.indexes.push_back(j);
-                    provisional_profit += packages[j].price;
+                    P.indexes.push_back(j);}
             }
-            bool check = false;
-            for(auto i : P.stocks){
-                std::cout << i.first.name << " " << i.second << "\n";
+            
+            bool check = P.isArbitrage();
+            if(P.price > maxProfit && check){
+                maxProfit = P.price;
+                bestPackage = P;
             }
         }
-        std::cout << "----------" << std::endl;
-        packages.push_back(Package(ms, n-1));   
-        // Package P(ms);
-        // P = P + packages[0];
-        // for(auto i : P.stocks){
-        //     std::cout << i.first.name << " " << i.second << "\n";
-        // }
+        packages.push_back(Package(ms)); 
+        if(bestPackage.indexes.size() == 0)std::cout<<"No Trade"<<std::endl;
+        else{
+            for(auto k : bestPackage.indexes){
+                packages[k].printPackage();
+                packages.erase(packages.begin() + k);
+            }
+            net_profit+=bestPackage.price;
+        }
     }
+    std::cout << net_profit << std::endl;
     return 0;
 }

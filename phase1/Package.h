@@ -7,12 +7,11 @@ class Package
 {
 public:
     RedBlackTree<int> stocks;
-    int price;
+    int price = 0;
     int isBuy;
     vector<int> indexes;
     Package() {};
-    Package(std::string i, int index) {
-        indexes.push_back(index);
+    Package(std::string i) {
         char delimiter = ' ';
         std::vector<std::string> order;
         size_t start = 0;
@@ -26,11 +25,11 @@ public:
         for(int j = 0; j<order.size()-2; j+=2){
             stocks.insert(order[j],stoi(order[j+1]));
         }
-        price = stoi(order[order.size()-2]);
         isBuy = (order[order.size()-1] == "b") ? 1 : -1;
+        price = stoi(order[order.size()-2]);
     }
     
-    Package(RedBlackTree<int> input, int isBuy, int price) : stocks(input), isBuy(isBuy), price(price) {};
+    Package(RedBlackTree<int> input, int isBuy, int price, vector<int> indexes) : stocks(input), isBuy(isBuy), price(price) ,indexes(indexes) {};
     Package(const Package& other)
     : price(other.price), isBuy(other.isBuy) {
         RedBlackTree<int> temp (other.stocks);
@@ -43,8 +42,25 @@ public:
             temp.search(i.first) = (this->stocks.search(i.first))*this->isBuy + (i.second)*(rhs.isBuy);
         }
         int res = this->price + rhs.price;
-        return Package(temp,1,res);
+        return Package(temp,1,res, this->indexes);
     }
-    
+
+    bool isArbitrage(){
+        for(auto i : stocks){
+            if(i.second != 0){
+                return false;
+            }
+        }
+        return true;
+    }
+    void printPackage(){
+        for(auto i : stocks){
+            std::cout << i.first.name << " " << i.second << " ";
+        }
+        std::cout << price << " ";
+        char b;
+        b = (isBuy == 1) ? 'b' : 's';
+        std::cout << b << std::endl;
+    }
 };
 

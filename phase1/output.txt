@@ -1,22 +1,20 @@
 Receiver is listening on port 8888
-X 1
-Y -1
-----------
-Y 1
-Z -1
-X 1
-Y 0
-Z -1
-----------
-X -1
-Z 1
-X 0
-Y -1
-Z 1
-X -1
-Y 1
-Z 0
-X 0
-Y 0
-Z 0
-----------
+No Trade
+No Trade
+X -1 Z 1 10 b
+Y 1 Z -1 -15 b
+X 1 Y -1 10 b
+No Trade
+No Trade
+No Trade
+X -1 Z 1 10 b
+Y 1 Z -1 -10 b
+X 1 Y -1 10 b
+No Trade
+X 1 Y -1 6 b
+X -1 Z 1 10 b
+Y 1 Z -1 -15 b
+No Trade
+X 1 Y -1 6 s
+X 1 Y -1 7 b
+29
