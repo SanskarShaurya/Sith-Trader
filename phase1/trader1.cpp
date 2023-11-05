@@ -4,17 +4,7 @@
 #include <string>
 #include "Stock.h"
 
-int main()
-{
-
-    Receiver rcv;
-    std::string message = "";
-    while (true)
-    {
-        message += rcv.readIML();
-        if (message[message.size() - 1] == '$')
-            break;
-    }
+void trader(std::string message, RedBlackTree<Stock> &stocks){
     char delimiter = '#';
     std::vector<std::string> input;
     size_t start = 0, end = 0;
@@ -160,5 +150,21 @@ int main()
             }
         }
     }
+}
+
+int main()
+{
+
+    Receiver rcv;
+    std::string message = "";
+    RedBlackTree<Stock> stocks;
+    while (true)
+    {
+        message = rcv.readIML();
+        trader(message, stocks);
+        if (message[message.size() - 1] == '$')
+            break;
+    }
+    
     return 0;
 }
