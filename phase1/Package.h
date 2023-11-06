@@ -26,7 +26,7 @@ public:
             stocks.insert(order[j],stoi(order[j+1]));
         }
         isBuy = (order[order.size()-1] == "b") ? 1 : -1;
-        price = stoi(order[order.size()-2]);
+        price = stoi(order[order.size()-2]) ;
     }
     
     Package(RedBlackTree<int> input, int isBuy, int price, vector<int> indexes) : stocks(input), isBuy(isBuy), price(price) ,indexes(indexes) {};
@@ -38,10 +38,11 @@ public:
     Package operator+(Package& rhs)
     {
         RedBlackTree<int> temp = this->stocks; 
+        for(auto i: temp) temp.search(i.first) = i.second * this->isBuy;
         for(auto i : rhs.stocks){
-            temp.search(i.first) = (this->stocks.search(i.first))*this->isBuy + (i.second)*(rhs.isBuy);
+            temp.search(i.first) = temp.search(i.first) + (i.second)*(rhs.isBuy);
         }
-        int res = this->price + rhs.price;
+        int res = this->price*this->isBuy + rhs.price*rhs.isBuy;
         return Package(temp,1,res, this->indexes);
     }
 
@@ -59,7 +60,7 @@ public:
         }
         std::cout << price << " ";
         char b;
-        b = (isBuy == 1) ? 'b' : 's';
+        b = (isBuy == 1) ? 's' : 'b';
         std::cout << b << std::endl;
     }
 };

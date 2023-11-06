@@ -34,18 +34,24 @@ int main()
         {
             Package P(ms);
             P.indexes.push_back(n);
+            std::cout<<n<<" ";
             for (int j = n - 1; j >= 0; j--)
             {
                 if ((i & (1 << j)) != 0){
                     P = P + packages[j];
-                    P.indexes.push_back(j);}
+                    P.indexes.push_back(j);
+                    std::cout<<j<<" ";
+                }
             }
-            
-            bool check = P.isArbitrage();
+            std::cout<<std::endl;
+            int check = P.isArbitrage();
+            P.printPackage();
+            if(check) std::cout<<P.price<<std::endl;
             if(P.price > maxProfit && check){
                 maxProfit = P.price;
                 bestPackage = P;
             }
+            std::cout<<"----"<<std::endl;
         }
         packages.push_back(Package(ms)); 
         if(bestPackage.indexes.size() == 0)std::cout<<"No Trade"<<std::endl;
@@ -56,6 +62,7 @@ int main()
             }
             net_profit+=bestPackage.price;
         }
+        std::cout<<"----------------"<<std::endl;
     }
     std::cout << net_profit << std::endl;
     return 0;
