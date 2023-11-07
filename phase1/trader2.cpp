@@ -34,20 +34,34 @@ int main()
             // std::cout<<i.stocks.nodeCount<<P1.stocks.nodeCount<<std::endl;
             if(i == P1){
                 if(i.isBuy == P1.isBuy){
-                    if(P1.price*P1.isBuy < i.price*i.isBuy){
+                    if(P1.price*P1.isBuy <= i.price*i.isBuy){
                         flag = 1;break;
                     }
-                    else packages.erase(it);
+                    else {packages.erase(it);break;}
+                }else if(i.isBuy + P1.isBuy == 0){
+                    if(i.price == P1.price){
+                        flag=1;
+                        packages.erase(it);
+                        break;
+                    }else if(i.price > P1.price){
+                        flag = 1;
+                        it->price = i.price - P1.price;
+                        break;
+                    }else{
+                        P1.price = P1.price - i.price;
+                        packages.erase(it);
+                        break;
+                    }
                 }
             }
         }
-        if(flag) continue;
+        if(flag){std::cout<<"No Trade"<<std::endl; continue;}
         Package bestPackage;
         int maxProfit = 0;
         int n = packages.size();
         for (int i = 0; i < (1 << n); i++)
         {
-            Package P(ms);
+            Package P = P1;
             P.indexes.push_back(n);
             // std::cout<<n<<" ";
             for (int j = n - 1; j >= 0; j--)
@@ -81,5 +95,8 @@ int main()
         // std::cout<<"----------------"<<std::endl;
     }
     std::cout << net_profit << std::endl;
+    for(auto i : packages){
+        i.printPackage();
+    }
     return 0;
 }

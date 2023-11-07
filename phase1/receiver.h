@@ -77,7 +77,6 @@ class Receiver
         return message;
     }
 
-
     void terminate()
     {
         close(clientSocket);
