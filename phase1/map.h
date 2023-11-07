@@ -30,6 +30,7 @@ public:
 	// Function to perform Left Rotation
 	Node* rotateLeft(Node* loc) {
 		// if(!loc->right) return;
+		if(!loc) return loc;
 		Node* q = loc->right;
 		if(!q) return loc;
 		Node* b = q->left;
@@ -47,6 +48,7 @@ public:
 	// Function to perform Right Rotation
 	Node* rotateRight(Node* loc) {
 		// if (!loc->left) return;
+		if(!loc) return loc;
 		Node* p = loc->left;
 		if(!p) return loc;
 		Node* b = p->right;
@@ -96,14 +98,14 @@ public:
 			rr = false;
 		} else if (rl) {
 			root->right = rotateRight(root->right);
-			root->right->parent = root;
+			if(root->right) root->right->parent = root;
 			root = rotateLeft(root);
 			root->colour = 'B';
 			root->left->colour = 'R';
 			rl = false;
 		} else if (lr) {
 			root->left = rotateLeft(root->left);
-			root->left->parent = root;
+			if(root->left) root->left->parent = root;
 			root = rotateRight(root);
 			root->colour = 'B';
 			root->right->colour = 'R';
