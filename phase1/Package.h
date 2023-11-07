@@ -25,6 +25,7 @@ public:
         for(int j = 0; j<order.size()-2; j+=2){
             stocks.insert(order[j],stoi(order[j+1]));
         }
+        stocks.nodeCount = (order.size() - 2)/2;
         isBuy = (order[order.size()-1] == "b") ? 1 : -1;
         price = stoi(order[order.size()-2]) ;
     }
@@ -34,6 +35,9 @@ public:
     : price(other.price), isBuy(other.isBuy) {
         RedBlackTree<int> temp (other.stocks);
         stocks = temp;
+    }
+    bool operator==(Package& rhs){
+        return (this->stocks == rhs.stocks);
     }
     Package operator+(Package& rhs)
     {

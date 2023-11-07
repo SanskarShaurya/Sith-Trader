@@ -27,6 +27,21 @@ int main()
     vector<Package> packages;
     int net_profit = 0;
     for(auto ms : input){
+        Package P1(ms);
+        bool flag = 0;
+        for(auto it = packages.begin(); it != packages.end(); it++){
+            auto i = *it;
+            // std::cout<<i.stocks.nodeCount<<P1.stocks.nodeCount<<std::endl;
+            if(i == P1){
+                if(i.isBuy == P1.isBuy){
+                    if(P1.price*P1.isBuy < i.price*i.isBuy){
+                        flag = 1;break;
+                    }
+                    else packages.erase(it);
+                }
+            }
+        }
+        if(flag) continue;
         Package bestPackage;
         int maxProfit = 0;
         int n = packages.size();
@@ -53,7 +68,8 @@ int main()
             }
             // std::cout<<"----"<<std::endl;
         }
-        packages.push_back(Package(ms)); 
+        // std::cout<<P1.stocks.nodeCount<<std::endl;
+        packages.push_back(P1); 
         if(bestPackage.indexes.size() == 0)std::cout<<"No Trade"<<std::endl;
         else{
             for(auto k : bestPackage.indexes){

@@ -7,6 +7,8 @@ using namespace std;
 template <class T>
 class RedBlackTree {
 public:
+	int nodeCount = 0;
+
 	// Node creating subclass
 	struct Node {
 		mystring data;
@@ -16,7 +18,7 @@ public:
 		Node* parent;
         T value;
 
-		Node () {};
+		Node () {nodeCount = 0;};
 		Node(mystring data, T value) : data(data),value(value), left(nullptr), right(nullptr), colour('R'), parent(nullptr) {}
 	};
 
@@ -166,6 +168,16 @@ public:
 		return temp;
 	}
 
+	bool operator==(RedBlackTree<T>& rhs){
+		for(auto i : rhs){
+			if(this->search(i.first) != i.second) return false;
+		}
+		for(auto i : *this){
+			if(rhs.search(i.first) != i.second) return false;
+		}
+		return true;
+	}
+
 	// Copy constructor
 	RedBlackTree(const RedBlackTree& other) {
 		root = copyHelper(other.root);
@@ -241,10 +253,11 @@ public:
 	}
 
 
-	RedBlackTree() : root(nullptr), ll(false), rr(false), lr(false), rl(false) {}
+	RedBlackTree() : root(nullptr), ll(false), rr(false), lr(false), rl(false) {nodeCount=0;}
 
 	// Function to insert data into the tree
 	void insert(mystring data, T value) {
+		nodeCount++;
 		if (root == nullptr) {
 			root = new Node(data, value);
 			root->colour = 'B';
