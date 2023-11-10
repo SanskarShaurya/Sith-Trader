@@ -43,15 +43,16 @@ int main()
                         flag=1;
                         packages.erase(it);
                         break;
-                    }else if(i.price > P1.price){
-                        flag = 1;
-                        it->price = i.price - P1.price;
-                        break;
-                    }else{
-                        P1.price = P1.price - i.price;
-                        packages.erase(it);
-                        break;
                     }
+                    // else if(i.price > P1.price){
+                    //     flag = 1;
+                    //     it->price = i.price - P1.price;
+                    //     break;
+                    // }else{
+                    //     P1.price = P1.price - i.price;
+                    //     packages.erase(it);
+                    //     break;
+                    // }
                 }
             }
         }
