@@ -1,5 +1,17 @@
 #include<string>
 
+template <class T>
+class myPair
+{
+    public:
+    T first;
+    T second;
+    myPair(int a){
+        first = a;
+        second = a;
+    }
+};
+
 class mystring
 {
 public:

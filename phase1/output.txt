@@ -1,0 +1,14 @@
+Receiver is listening on port 8888
+No Trade
+No Trade
+No Trade
+No Trade
+No Trade
+No Trade
+No Trade
+No Trade
+No Trade
+B 3 10 24 max 0 s#
+B 5 12 54 max 0 s#
+B -8 13 3000 max 14 s#
+B 342 -24000

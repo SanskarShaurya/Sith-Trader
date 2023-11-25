@@ -272,7 +272,7 @@ public:
             else if(temp->data > data) temp = temp->left;
             else temp = temp->right;
         }
-		insert(data,0);
+		insert(data,T(0));
 		return search(data);
         // return -1;
     }
