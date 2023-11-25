@@ -240,7 +240,7 @@ public:
 	iterator begin() const
 	{
 		Node *node = root;
-		while (node->left != nullptr)
+		if(node) while (node->left != nullptr)
 		{
 			node = node->left;
 		}

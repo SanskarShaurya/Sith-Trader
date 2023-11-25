@@ -42,6 +42,42 @@ void get_max_sum(vector<Package> &packages)
         get_max_sum(packages);
 }
 
+int find_all_c(std::vector<Package>& packages, std::vector<int>& results) {
+    int n = packages.size();
+    int profit = 0;
+    std::vector<int> c(n, 0);
+    std::vector<int> ans(n, 0);
+    c[n-1] = 0;
+    while (true) {
+        Package sum;
+        for (int i = 0; i < n; ++i) {
+            Package temp = packages[i] * c[i];
+            sum = sum + temp;
+            // sum.printPackage();
+            // std::cout <<std::endl << "-----" << std::endl;
+        }
+
+        if (sum.isArbitrage() && sum.price > profit) {
+            ans = c;
+            profit = sum.price;
+        }
+
+        // Increment the rightmost index
+        int i = n - 1;
+        while (i >= 0 && ++c[i] > packages[i].maxQuantity) {
+            c[i--] = 0;
+        }
+
+        // Check if we've finished iterating
+        if (i < 0) {
+            break;
+        }
+    }
+    results = ans;
+    return profit;
+}
+
+
 int main()
 {
     Receiver rcv;
@@ -62,43 +98,32 @@ int main()
     }
     delimiter = ' ';
     vector<Package> packages;
-    RedBlackTree<myPair<int>> maxSum;
     int net_profit = 0;
     bool skip = false;
-    for (auto ms : input)
-    {
+    for(auto ms : input){
         Package P1(ms);
         bool flag = 0;
         // std::cout << P1.quantity << std::endl;
-        for (auto it = packages.begin(); it != packages.end(); it++)
-        {
+        for(auto it = packages.begin(); it != packages.end(); it++){
             auto i = *it;
-            if (i == P1 && i.price == P1.price)
-            {
-                if (P1.isBuy == i.isBuy)
-                {
+            if(i == P1 && i.price == P1.price){
+                if(P1.isBuy == i.isBuy){
                     it->quantity += P1.quantity;
-                }
-                else
-                {
-                    if (i.quantity > P1.quantity)
-                    {
+                    it->maxQuantity += P1.quantity;
+                }else{
+                    if(i.quantity > P1.quantity){
                         it->quantity -= P1.quantity;
                         skip = true;
-                    }
-                    else
-                    {
+                    }else{
                         P1.quantity = P1.quantity - i.quantity;
                         packages.erase(it);
-                        if (P1.quantity != 0)
-                        {
+                        if(P1.quantity!=0) {
                             flag = 0;
                             break;
-                        }
-                        else
-                        {
+                        }else{
                             skip = true;
                         }
+                        
                     }
                 }
                 flag = 1;
@@ -106,22 +131,48 @@ int main()
             }
         }
 
-        if (skip)
-        {
+        if(skip){
             skip = false;
+            get_max_sum(packages);
             continue;
         }
 
-        if (!flag)
-        {
+        if(!flag) {
             packages.push_back(P1);
         }
+
+        vector<int> results;
         get_max_sum(packages);
-        std::cout << "No Trade" << std::endl;
+
+        // for(auto i : packages){
+        //     std::cout << i.maxQuantity << " " << std::endl;
+        // }
+
+        bool hasArbitrage = false;
+
+            bool flag2 = false;
+            net_profit  +=  find_all_c(packages, results);
+            int ind = results.size()-1;
+            for(int i = packages.size()-1; i>=0; i--){
+                if(results[ind]!=0){
+                    packages[i].printPackage();
+                    char b;
+                    b = (packages[i].isBuy == 1) ? 's' : 'b';
+                    std::cout << results[ind] << " " << b << std::endl;
+                    packages[i].quantity -= results[ind];
+                    packages[i].maxQuantity -= results[ind];
+                    flag2 = true;
+                    hasArbitrage = true;
+                }
+                ind--;
+            }
+            get_max_sum(packages);
+
+        if(!hasArbitrage){
+            std::cout << "No Trade" << std::endl;
+        }
+
     }
-    for (auto i : packages)
-    {
-        i.printPackage();
-    }
+    std::cout << net_profit << std::endl;
     return 0;
 }

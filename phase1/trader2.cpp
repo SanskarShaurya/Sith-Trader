@@ -98,6 +98,9 @@ int main()
     std::cout << net_profit << std::endl;
     for(auto i : packages){
         i.printPackage();
+        char b;
+        b = (i.isBuy == 1) ? 's' : 'b';
+        std::cout << b <<  std::endl;
     }
     return 0;
 }
