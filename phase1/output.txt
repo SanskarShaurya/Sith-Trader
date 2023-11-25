@@ -8,7 +8,14 @@ No Trade
 No Trade
 No Trade
 No Trade
-B 3 10 24 max 0 s#
-B 5 12 54 max 0 s#
-B -8 13 3000 max 14 s#
-B 342 -24000
+No Trade
+X 1 Y -1 10 5 max 3 s#
+Y 1 Z -1 -15 5 max 3 s#
+X -1 Z 1 10 2 max 2 s#
+A 2 B 3 10 8 max 8 s#
+B 5 C -3 12 18 max 8 s#
+A -2 C 2 10 12 max 8 s#
+B -8 C 1 13 1000 max 8 s#
+X 2 Y -3 15 2 max 1 s#
+Y 4 Z -2 10 1 max 1 s#
+X -2 Y -1 Z 2 10 4 max 3 s#
