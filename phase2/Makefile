@@ -15,5 +15,5 @@ trader: main.cpp market.cpp worker.cpp trader.cpp
 	./trader 2 > output.txt
 
 clean:
-	rm -rf market trader output.txt
+	rm -rf market trader 
 	rm -rf *~

@@ -1,0 +1,11 @@
+AA purchased 5 share of AMZN from KG for 166$/share
+AA purchased 7 share of AMZN from KA for 379$/share
+
+---End of Day---
+Total Amount of Money Transferred: $3483
+Number of Completed Trades: 2
+Number of Shares Traded: 12
+AA bought 12 and sold 0 for a net transfer of $-3483
+KA bought 0 and sold 7 for a net transfer of $2653
+KG bought 0 and sold 5 for a net transfer of $830
+asd bought 0 and sold 0 for a net transfer of $0

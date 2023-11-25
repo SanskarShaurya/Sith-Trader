@@ -1,5 +1,7 @@
 #ifndef MARKET_H
 #define MARKET_H
+#include "heap1.h"
+
 class market
 {
 public:
