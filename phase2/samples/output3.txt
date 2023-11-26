@@ -1,0 +1,5 @@
+TL
+0 KarGoCorp BUY AMZN $100 #30 10
+1 KarGoExpress SELL AMZN $80 #30 0
+5 KarGoKrab SELL AMZN $70 #40 0
+!@

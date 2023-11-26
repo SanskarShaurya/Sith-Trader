@@ -108,13 +108,17 @@ int main()
             auto i = *it;
             if(i == P1 && i.price == P1.price){
                 if(P1.isBuy == i.isBuy){
-                    it->quantity += P1.quantity;
-                    it->maxQuantity += P1.quantity;
+                    P1.maxQuantity = P1.quantity + it->maxQuantity;
+                    P1.quantity += it->quantity;
+                    packages.erase(it);
+                    flag = 0;
+                    break;
                 }else{
                     if(i.quantity > P1.quantity){
                         it->quantity -= P1.quantity;
                         skip = true;
                     }else{
+                        P1.maxQuantity = it->maxQuantity;
                         P1.quantity = P1.quantity - i.quantity;
                         packages.erase(it);
                         if(P1.quantity!=0) {
@@ -144,10 +148,6 @@ int main()
         vector<int> results;
         get_max_sum(packages);
 
-        // for(auto i : packages){
-        //     std::cout << i.maxQuantity << " " << std::endl;
-        // }
-
         bool hasArbitrage = false;
 
             bool flag2 = false;
@@ -160,7 +160,7 @@ int main()
                     b = (packages[i].isBuy == 1) ? 's' : 'b';
                     std::cout << results[ind] << " " << b << std::endl;
                     packages[i].quantity -= results[ind];
-                    packages[i].maxQuantity -= results[ind];
+                    packages[i].maxQuantity = min(packages[i].maxQuantity, packages[i].quantity);
                     flag2 = true;
                     hasArbitrage = true;
                 }

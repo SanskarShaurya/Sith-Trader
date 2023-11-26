@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
                     {
                         if (stoi(order[1]) >= stocks.search(curr).bestBuying)
                         {
-                            std::cout << "No trade"
+                            std::cout << "No Trade"
                                       << "\r\n";
                             continue;
                         }
@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
                     {
                         if (stoi(order[1]) == stocks.search(curr).bestSelling)
                         {
-                            std::cout << "No trade"
+                            std::cout << "No Trade"
                                       << "\r\n";
                             stocks.search(curr).hasBestSelling = 0;
                         }
@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
                         }
                         else
                         {
-                            std::cout << "No trade"
+                            std::cout << "No Trade"
                                       << "\r\n";
                             if (stocks.search(curr).hasBestBuying)
                             {
@@ -194,7 +194,7 @@ int main(int argc, char *argv[])
                     {
                         if (stoi(order[1]) <= stocks.search(curr).bestSelling)
                         {
-                            std::cout << "No trade"
+                            std::cout << "No Trade"
                                       << "\r\n";
                             continue;
                         }
@@ -203,7 +203,7 @@ int main(int argc, char *argv[])
                     {
                         if (stoi(order[1]) == stocks.search(curr).bestBuying)
                         {
-                            std::cout << "No trade"
+                            std::cout << "No Trade"
                                       << "\r\n";
                             stocks.search(curr).hasBestBuying = 0;
                         }
@@ -224,7 +224,7 @@ int main(int argc, char *argv[])
                         }
                         else
                         {
-                            std::cout << "No trade"
+                            std::cout << "No Trade"
                                       << "\r\n";
                             if (stocks.search(curr).hasBestSelling)
                             {
@@ -316,6 +316,8 @@ int main(int argc, char *argv[])
                 for (auto k : bestPackage.indexes)
                 {
                     packages[k].printPackage();
+                    char b = (packages[k].isBuy == 1) ? 's' : 'b';
+                    std::cout << b << std::endl;
                     packages.erase(packages.begin() + k);
                 }
                 net_profit += bestPackage.price;
@@ -340,8 +342,11 @@ int main(int argc, char *argv[])
                 {
                     if (P1.isBuy == i.isBuy)
                     {
-                        it->quantity += P1.quantity;
-                        it->maxQuantity += P1.quantity;
+                        P1.quantity += it->quantity;
+                        P1.maxQuantity = P1.quantity + it->maxQuantity;
+                        packages.erase(it);
+                        flag = 0;
+                        break;
                     }
                     else
                     {
@@ -386,10 +391,6 @@ int main(int argc, char *argv[])
             vector<int> results;
             get_max_sum(packages);
 
-            // for(auto i : packages){
-            //     std::cout << i.maxQuantity << " " << std::endl;
-            // }
-
             bool hasArbitrage = false;
 
             bool flag2 = false;
@@ -404,7 +405,7 @@ int main(int argc, char *argv[])
                     b = (packages[i].isBuy == 1) ? 's' : 'b';
                     std::cout << results[ind] << " " << b << std::endl;
                     packages[i].quantity -= results[ind];
-                    packages[i].maxQuantity -= results[ind];
+                    packages[i].maxQuantity = min(packages[i].maxQuantity, packages[i].quantity);
                     flag2 = true;
                     hasArbitrage = true;
                 }
