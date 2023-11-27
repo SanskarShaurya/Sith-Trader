@@ -49,6 +49,7 @@ public:
         }
         word.push_back(line.substr(start));
         if(word.size() < 7 || word[word.size()-2][0]!='#') {invalid = true; return;}
+        
         inTime = stoi(word[0]);
         clientName = word[1];
         isBuy = (word[2] == "BUY") ? 1 : -1;

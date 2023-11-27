@@ -30,7 +30,6 @@ int reader(int time)
         }
         if (line == "TL" || line == "")
             continue;
-        // if(text.size()!=0) if(text[text.size()-1].clientName==client_name) {continue;}
         i++;
         if (i > text.size())
         {
@@ -81,7 +80,9 @@ int reader(int time)
                 string m = "";
                 m = m + std::to_string(time) + " " + client_name + " SELL ";
                 for (auto i : fugs.stocks)
-                    m = m + i.first.name;
+                    {
+                      if(i.second != 0 )m = m + i.first.name;
+                    }
                 m = m + " $" + std::to_string(curr.price) + " #" + std::to_string(curr.quantity) + " -1";
                 std::lock_guard<std::mutex> lock(printMutex);
                 std::cout << m << std::endl;
@@ -92,7 +93,7 @@ int reader(int time)
                 order curr = fugs.sell.top();
                 string m = "";
                 m = m + std::to_string(time) + " " + client_name + " BUY ";
-                for(auto i : fugs.stocks) m = m + i.first.name;
+                for(auto i : fugs.stocks) if(i.second!=0) m = m + i.first.name ;
                 m = m + " $" + std::to_string(curr.price) + " #" + std::to_string(curr.quantity) + " -1";
                 std::cout << m << std::endl;
                 fugs.buy.push(order(m));
