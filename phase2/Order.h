@@ -38,35 +38,33 @@ public:
     }
 
     order(std::string line){
-        try { 
-            char delimiter = ' ';
-            std::vector<std::string> word;
-            size_t start = 0;
-            size_t end = 0;
-            while ((end = line.find(delimiter, start)) != std::string::npos)
-            {
-                word.push_back(line.substr(start, end - start));
-                start = end + 1;
-            }
-            word.push_back(line.substr(start));
-            inTime = stoi(word[0]);
-            clientName = word[1];
-            isBuy = (word[2] == "BUY") ? 1 : -1;
-            if(stoi(word[word.size()-1]) != -1) lifeTime = stoi(word[word.size()-1]);
-            else isInfinite = true;
-            quantity = stoi(word[word.size()-2].substr(1));
-            price = stoi(word[word.size()-3].substr(1));
-            if(word.size()==7){
-                stocks.insert(word[3],1);
-                stocks.nodeCount = 1;
-            }else{
-                for(int i = 3; i<word.size()-3; i+=2){
-                    stocks.insert(word[i],stoi(word[i+1]));
-                }
-                stocks.nodeCount = (word.size() - 6)/2;
-            }
-        } catch (const std::exception e){
-            invalid = true;
+        char delimiter = ' ';
+        std::vector<std::string> word;
+        size_t start = 0;
+        size_t end = 0;
+        while ((end = line.find(delimiter, start)) != std::string::npos)
+        {
+            word.push_back(line.substr(start, end - start));
+            start = end + 1;
         }
+        word.push_back(line.substr(start));
+        if(word.size() < 7 || word[word.size()-2][0]!='#') {invalid = true; return;}
+        inTime = stoi(word[0]);
+        clientName = word[1];
+        isBuy = (word[2] == "BUY") ? 1 : -1;
+        if(stoi(word[word.size()-1]) != -1) lifeTime = stoi(word[word.size()-1]);
+        else isInfinite = true;
+        quantity = stoi(word[word.size()-2].substr(1));
+        price = stoi(word[word.size()-3].substr(1));
+        if(word.size()==7){
+            stocks.insert(word[3],1);
+            stocks.nodeCount = 1;
+        }else{
+            for(int i = 3; i<word.size()-3; i+=2){
+                stocks.insert(word[i],stoi(word[i+1]));
+            }
+            stocks.nodeCount = (word.size() - 6)/2;
+        }
+
     }
 };

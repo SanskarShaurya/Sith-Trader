@@ -95,8 +95,8 @@ void market::start()
     int age = 0;
     while (std::getline(buffer, line)) {
         age = age + 1;
-        if(line == "!@") break;
-        if(line == "TL") continue;
+        if(line == "@!") break;
+        if(line == "TL" || line == "!@") continue;
         order curr = order(line);
         if(curr.invalid) continue;
 

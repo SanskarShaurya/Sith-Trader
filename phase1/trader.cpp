@@ -94,6 +94,7 @@ int main(int argc, char *argv[])
         if (message[message.size() - 1] == '$')
             break;
     }
+    rcv.terminate();
     char delimiter = '#';
     std::vector<std::string> input;
     size_t start = 0, end = 0;
