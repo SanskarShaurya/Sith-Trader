@@ -28,12 +28,12 @@ public:
     }
 
     void printOrder(){
-        std::cout << "Client Name: " << clientName << std::endl;
-        std::cout << "Is Buy: " << isBuy << std::endl;
-        std::cout << "Price: " << price << std::endl;
-        std::cout << "Quantity: " << quantity << std::endl;
+        std::cerr << "Client Name: " << clientName << std::endl;
+        std::cerr << "Is Buy: " << isBuy << std::endl;
+        std::cerr << "Price: " << price << std::endl;
+        std::cerr << "Quantity: " << quantity << std::endl;
         for(auto i : stocks){
-            if(i.second) std::cout << i.first.name << " " << i.second << std::endl;
+            if(i.second) std::cerr << i.first.name << " " << i.second << std::endl;
         }
     }
 
@@ -48,8 +48,8 @@ public:
             start = end + 1;
         }
         word.push_back(line.substr(start));
-        if(word.size() < 7 || word[word.size()-2][0]!='#') {invalid = true; return;}
-        
+        if(word.size() < 7 || word[word.size()-2][0]!='#' || word[word.size()-3][0] !='$') {invalid = true; return;}
+
         inTime = stoi(word[0]);
         clientName = word[1];
         isBuy = (word[2] == "BUY") ? 1 : -1;

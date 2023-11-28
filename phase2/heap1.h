@@ -2,9 +2,10 @@
 #include <string>
 #include "Order.h"
 
+template <class T>
 class MinHeap {
 private:
-    std::vector<order> heap;
+    std::vector<T> heap;
 
     void heapifyUp(int i) {
         while (i && heap[parent(i)] > heap[i]) {
@@ -36,7 +37,7 @@ private:
     int rightChild(int i) { return (2 * i + 2); }
 
 public:
-    void push(order o) {
+    void push(T o) {
         heap.push_back(o);
         int index = heap.size() - 1;
         heapifyUp(index);
@@ -58,7 +59,7 @@ public:
         }
     }
 
-    order& top() {
+    T& top() {
         try {
             if (heap.size() == 0)
                 throw std::out_of_range("Vector<X>::at() : "

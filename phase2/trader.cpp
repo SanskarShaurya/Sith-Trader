@@ -11,7 +11,7 @@
 
 extern std::atomic<int> commonTimer;
 extern std::mutex printMutex; // Declare the mutex for printing
-std::string client_name = "Harry";
+std::string client_name = "22B0985_22B0958";
 static string last_client;
 static std::vector<order> text;
 static vector<fug> heapList;
@@ -31,16 +31,9 @@ int reader(int time)
         if (line == "TL" || line == "")
             continue;
         i++;
-        if (i > text.size())
-        {
+        if (i > text.size()){
             order curr = order(line);
-            if (curr.invalid)
-            {
-                i--;
-                continue;
-            }
             curr.age = text.size();
-            int currTime = curr.inTime;
             fug *foundElement = nullptr;
             for (auto it = heapList.begin(); it != heapList.end(); it++)
             {
@@ -50,54 +43,98 @@ int reader(int time)
                     break;
                 }
             }
-            if (foundElement == nullptr)
-            {
+            if(!foundElement){
                 heapList.push_back(fug(curr));
+                text.push_back(order(line));
                 continue;
             }
-            if (curr.isBuy == 1)
-            {
+
+            if(curr.isBuy==1){
                 foundElement->buy.push(curr);
-            }
-            else
-            {
+            }else{
                 foundElement->sell.push(curr);
             }
-            foundElement->ifTrade(currTime);
+            foundElement->ifTrade(t);
             text.push_back(order(line));
         }
+        
+        
     }
+
     if (text.size() > 0 && text[text.size() - 1].clientName != client_name)
     {
+        for(auto it = heapList.begin(); it!=heapList.end(); it++){
+            fug i = *it;
 
-        // std::cout << time << " Harry BUY AMD $100 #32 3" << std::endl;
-        // text.push_back(order(std::to_string(time) + " Harry BUY AMD $100 #32 3"));
-        for (auto fugs : heapList)
-        {
-            if (fugs.buy.size() != 0)
-            {
-                order curr = fugs.buy.top();
+            if(it->buy.size() != 0){
+                order top = it->buy.top();
+                
+                while(top.lifeTime!=-1 && top.inTime + top.lifeTime < t){
+                    it->buy.pop();
+                    if(it->buy.size()==0) break;
+                    top = it->buy.top();
+                }
                 string m = "";
-                m = m + std::to_string(time) + " " + client_name + " SELL ";
-                for (auto i : fugs.stocks)
+                m = m + std::to_string(t) + " " + client_name + " SELL ";
+                int count = 0;
+                for(auto i :it->stocks) count++;
+                for (auto i : it->stocks)
+                    {
+                        if(count == 1) m = m + i.first.name + " ";
+                        else if(i.second != 0 )m = m + i.first.name + " " + std::to_string(i.second) + " ";
+                    }
+                int expire;
+                if(top.lifeTime == -1) expire = -1;
+                else expire = top.inTime + top.lifeTime - t;
+                m = m + "$" + std::to_string(top.price) + " #" + std::to_string(top.quantity) + " " + std::to_string(expire);
+                
+                order now = order(m);
+                now.age = text.size();
+                if(it->buy.size()!=0){ 
+                    if(it->median == 0 || it->median < top.price)
+                    {
+                        it->sell.push(now);
+                        it->ifTrade(t);
+                        text.push_back(now);
+                        {                
+                            std::lock_guard<std::mutex> lock(printMutex);     
+                            std::cout << m << std::endl;
+                        }
+                    }
+                }
+
+            }
+            if(it->sell.size() != 0){
+                order top = it->sell.top();
+                while(top.lifeTime!=-1 && top.inTime + top.lifeTime < t){
+                    it->sell.pop();
+                    if(it->sell.size()==0) break;
+                    top = it->sell.top();
+                }
+                string m = "";
+                m = m + std::to_string(t) + " " + client_name + " BUY ";
+                for (auto i : it->stocks)
                     {
                       if(i.second != 0 )m = m + i.first.name;
                     }
-                m = m + " $" + std::to_string(curr.price) + " #" + std::to_string(curr.quantity) + " -1";
-                std::lock_guard<std::mutex> lock(printMutex);
-                std::cout << m << std::endl;
-                fugs.sell.push(order(m));
-                text.push_back(order(m));
-            }
-            else if(fugs.sell.size()!=0){
-                order curr = fugs.sell.top();
-                string m = "";
-                m = m + std::to_string(time) + " " + client_name + " BUY ";
-                for(auto i : fugs.stocks) if(i.second!=0) m = m + i.first.name ;
-                m = m + " $" + std::to_string(curr.price) + " #" + std::to_string(curr.quantity) + " -1";
-                std::cout << m << std::endl;
-                fugs.buy.push(order(m));
-                text.push_back(order(m));
+                int expire;
+                if(top.lifeTime == -1) expire = -1;
+                else expire = top.inTime + top.lifeTime - t;
+                m = m + " $" + std::to_string(top.price) + " #" + std::to_string(top.quantity) + " " + std::to_string(expire);
+                
+                order now = order(m);
+                now.age = text.size();
+                if(it->sell.size()!=0){ 
+                    if(it->median == 0 || it->median > top.price){
+                        it->buy.push(now);
+                        it->ifTrade(t);
+                        text.push_back(now);
+                        {                
+                            std::lock_guard<std::mutex> lock(printMutex);     
+                            std::cout << m << std::endl;
+                        }
+                    }
+                }
             }
         }
     }

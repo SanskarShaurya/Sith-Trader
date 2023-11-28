@@ -8,16 +8,16 @@ int trades = 0;
 int shares = 0;
 RedBlackTree<myTriple<int>> clients;
 
-struct fug{
+struct nofug{
     RedBlackTree<int> stocks;
-    MinHeap buy;
-    MinHeap sell;
-    fug(){
+    MinHeap<order> buy;
+    MinHeap<order> sell;
+    nofug(){
         stocks = RedBlackTree<int>();
-        buy = MinHeap();
-        sell = MinHeap();
+        buy = MinHeap<order>();
+        sell = MinHeap<order>();
     }
-    fug(order o){
+    nofug(order o){
         stocks = o.stocks;
         if(o.isBuy==1){
             buy.push(o);
@@ -27,18 +27,18 @@ struct fug{
     }
 };
 
-void ifTrade(fug& myfuggu, int currTime){
-    if (myfuggu.buy.size() == 0 || myfuggu.sell.size() == 0) return;
-    order* buyOrder = &myfuggu.buy.top();
-    order* sellOrder = &myfuggu.sell.top();
+void ifTrade(nofug& mynofuggu, int currTime){
+    if (mynofuggu.buy.size() == 0 || mynofuggu.sell.size() == 0) return;
+    order* buyOrder = &mynofuggu.buy.top();
+    order* sellOrder = &mynofuggu.sell.top();
     if (buyOrder->lifeTime != -1 && buyOrder->lifeTime + buyOrder->inTime < currTime) {
-        myfuggu.buy.pop();
-        ifTrade(myfuggu, currTime);
+        mynofuggu.buy.pop();
+        ifTrade(mynofuggu, currTime);
         return;
     }
     if(sellOrder->lifeTime != -1 && sellOrder->lifeTime + sellOrder->inTime < currTime){
-        myfuggu.sell.pop();
-        ifTrade(myfuggu, currTime);
+        mynofuggu.sell.pop();
+        ifTrade(mynofuggu, currTime);
         return;
     }
     if (buyOrder->price < sellOrder->price) return;
@@ -65,10 +65,11 @@ void ifTrade(fug& myfuggu, int currTime){
     clients.search(sellOrder->clientName).second += tradeQuantity;
     clients.search(buyOrder->clientName).third -= tradeQuantity*tradePrice;
     clients.search(sellOrder->clientName).third += tradeQuantity*tradePrice;
+
     std::cout<<"from "<<sellOrder->clientName<<" for "<<tradePrice<<"$/share"<<std::endl;
-    if(buyOrder->quantity == 0) myfuggu.buy.pop();
-    if(sellOrder->quantity == 0) myfuggu.sell.pop();
-    ifTrade(myfuggu, currTime);
+    if(buyOrder->quantity == 0) mynofuggu.buy.pop();
+    if(sellOrder->quantity == 0) mynofuggu.sell.pop();
+    ifTrade(mynofuggu, currTime);
     return;
 }
 
@@ -90,7 +91,7 @@ void market::start()
 
     // Read the string line by line
     std::string line;
-    vector<fug> heapList;
+    vector<nofug> heapList;
     int currTime = 0;
     int age = 0;
     while (std::getline(buffer, line)) {
@@ -102,7 +103,7 @@ void market::start()
 
         if(curr.inTime > currTime) currTime = curr.inTime;
         curr.age = age;
-        fug* foundElement = nullptr;
+        nofug* foundElement = nullptr;
         for(auto it = heapList.begin(); it != heapList.end(); it++){
             if(curr.stocks == it->stocks){
                 foundElement = &(*it);
@@ -111,7 +112,7 @@ void market::start()
         }
         clients.search(curr.clientName);
         if(foundElement==nullptr){
-            heapList.push_back(fug(curr));
+            heapList.push_back(nofug(curr));
             continue;
         }
         if(curr.isBuy==1){
@@ -129,9 +130,5 @@ void market::start()
     for(auto i : clients){
         std::cout << i.first.name << " bought " << i.second.first << " and sold " << i.second.second << " for a net transfer of $" << i.second.third << std::endl;
     }
-    // for(auto it = heapList.begin(); it != heapList.end(); it++){
-    //     if(it->buy.size()!=0) it->buy.top().printOrder();
-    //     if(it->sell.size()!=0) it->sell.top().printOrder();
-    //     std::cout << "------------------------" << std::endl;
-    // }
+
 }
